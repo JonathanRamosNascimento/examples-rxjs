@@ -73,7 +73,7 @@ export class BasicComponent implements OnInit {
     setTimeout(()=> {
       this.subscription1.unsubscribe();
       this.subscription2.unsubscribe();
-    }, 4000)
+    }, 15000)
   }
 
 }
