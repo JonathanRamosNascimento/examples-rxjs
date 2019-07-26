@@ -1,4 +1,6 @@
-import { Subject } from 'rxjs';
+import { DataModel } from './../datamodel';
+import { GenRandomDataService } from './../gen-random-data.service';
+import { Subject, ReplaySubject, AsyncSubject, BehaviorSubject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,16 +10,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubjectsComponent implements OnInit {
 
-  constructor() { }
+  private subject: Subject<DataModel>;
+  private replaySubject: ReplaySubject<DataModel>;
+  private asyncSubject: AsyncSubject<DataModel>;
+  private behaviorSubject: BehaviorSubject<DataModel>;
+
+  constructor(private dataService: GenRandomDataService) { }
 
   ngOnInit() {
-    let s: Subject<number> = new Subject<number>();
-    s.subscribe(n => console.log(n));
-    s.next(1);
-    s.next(2);
-    s.next(3);
-    s.next(4);
-    s.complete();
-  }
+    this.subject = new Subject<DataModel>();
+    this.replaySubject = new ReplaySubject<DataModel>();
+    this.asyncSubject = new AsyncSubject<DataModel>();
+    this.behaviorSubject = new BehaviorSubject<DataModel>({timestamp: 0, data: 0});
+
+    this.dataService.dataObservable.subscribe(this.subject);
+    this.dataService.dataObservable.subscribe(this.replaySubject);
+    this.dataService.dataObservable.subscribe(this.asyncSubject);
+    this.dataService.dataObservable.subscribe(this.behaviorSubject);
+}
+
+connect() {
+  this.dataService.dataObservable.connect();
+}
 
 }
