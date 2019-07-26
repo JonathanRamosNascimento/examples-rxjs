@@ -12,7 +12,7 @@ export class SubjectsComponent implements OnInit {
 
   ngOnInit() {
     let s: Subject<number> = new Subject<number>();
-    s.subscribe(n=>console.log(n));
+    s.subscribe(n => console.log(n));
     s.next(1);
     s.next(2);
     s.next(3);
